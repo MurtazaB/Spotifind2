@@ -59,10 +59,7 @@ def authenticate():
 	auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
 	return redirect(auth_url)
 
-<<<<<<< HEAD
-@app.route('/user/most-recent')
-def mostRecentlyPlayed():
-	return "Test"
+
 
 
 @app.route('/discover')
@@ -70,7 +67,7 @@ def discover():
 	# Set discoverList to provide the right information
 	discoverList = [1, 2, 3, 4, 5]
 	return render_template('discover.html', pageName='Discover', discoverList=discoverList)
-=======
+
 @app.route("/getFavorites")
 def getFavorites():
     fav_url = "https://api.spotify/v1/me/top/tracks?limit=10"
@@ -86,10 +83,6 @@ def getFavorites():
 
     return result;
 
-@app.route('/discover')
-def discover():
-	return render_template('discover.html', pageName='Discover')
->>>>>>> origin/master
 
 @app.route("/callback/q")
 def callback():
