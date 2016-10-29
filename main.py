@@ -1,5 +1,5 @@
 from flask import Flask, request, redirect, g, render_template, session
-
+import flask
 import requests
 import json
 import urllib
@@ -9,6 +9,7 @@ import base64
 # from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
+app.secret_key = 'superSecret'
 
 
 
@@ -80,8 +81,10 @@ def callback():
     token_type = response_data["token_type"]
     expires_in = response_data["expires_in"]
 
-    flask.session['some_token'] = access_token
+    flask.session['api_session_token'] = access_token
+    flask.session.modified = True;
 
+    print 'Session token ' + session['api_session_token'];
     # Auth Step 6: Use the access token to access Spotify API
     authorization_header = {"Authorization":"Bearer {}".format(access_token)}
 
