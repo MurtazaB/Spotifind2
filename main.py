@@ -10,6 +10,9 @@ import base64
 
 app = Flask(__name__)
 
+var token = None
+
+
 ## Needed for Bootstrap
 # Bootstrap(app)
 
@@ -77,6 +80,8 @@ def callback():
     refresh_token = response_data["refresh_token"]
     token_type = response_data["token_type"]
     expires_in = response_data["expires_in"]
+
+    token = access_token
 
     # Auth Step 6: Use the access token to access Spotify API
     authorization_header = {"Authorization":"Bearer {}".format(access_token)}
