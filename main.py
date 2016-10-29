@@ -57,15 +57,14 @@ def authenticate():
 	auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
 	return redirect(auth_url)
 
-@app.route('/user/most-recent')
-def mostRecentlyPlayed():
+@app.route('/user/favorite')
+def mostFavorite():
 	return "Test";
 
-<<<<<<< HEAD
 @app.route('/discover')
 def discover():
 	return render_template('discover.html', pageName='Discover')
-=======
+
 @app.route("/callback/q")
 def callback():
     # Auth Step 4: Requests refresh and access tokens
@@ -106,4 +105,3 @@ def callback():
     # Combine profile and playlist data to display
     display_arr = [profile_data] + playlist_data["items"];
     return render_template("index.html",sorted_array=display_arr)
->>>>>>> origin/master
