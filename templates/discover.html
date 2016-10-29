@@ -6,8 +6,22 @@
 
 
 <!-- Add list of items -->
-{% for each in discoverList %}
-
+<div class="container">
+	{% for each in discoverList %}
+		<div class="song-listing">
+			<div class="row">
+				<div class="col-sm-2">
+					<img src="http://placehold.it/150x150">
+				</div>
+				<div class="col-sm-10">
+					<h3>{{loop.index}}. Song Name</h3>
+					<p>Artist | Album</p>
+					<p>Genre</p>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+</div>
 
 
 {% endblock %}
