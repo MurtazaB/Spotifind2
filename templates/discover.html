@@ -1,0 +1,61 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<style type="text/css">
+	.spacer {
+		/*padding-bottom: 5px;*/
+	}
+
+	.black-row {
+		background-color: #181818;
+		color: white;
+	}
+
+	.gray-row {
+		background-color: #282828;
+		color: white;
+	}
+
+	.listing-row {
+		width: 100%;
+	
+	}
+
+	.glyphicon {
+		color: #07BB4F;
+	}
+
+</style>
+
+<!-- Add carousel -->
+
+
+<!-- Add list of items -->
+<!-- <div class="container"> -->
+	{% for each in discoverList %}
+	<div class="{{ 'gray' if (loop.index % 2) ==1 else 'black' }}-row listing-row">
+		<div class="container">
+			<div class="spacer"></div>
+			<div class="row">
+				<div class="col-sm-2">
+					<img src="http://placehold.it/150x150">
+				</div>
+				<div class="col-sm-6">
+					<h3>{{loop.index}}. Song Name <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></h3>
+					<p>Artist | Album</p>
+					<p>Genre</p>
+					<audio controls>
+					  <source src="https://p.scdn.co/mp3-preview/12b8cee72118f995f5494e1b34251e4ac997445e">
+					Unable to generate a preview for this song.
+					</audio>
+				</div>
+			</div>
+			<div class="spacer"></div>
+		</div>
+	</div>
+		<!-- <div style="margin-bottom: 20px;"></div> -->
+	{% endfor %}
+<!-- </div> -->
+
+
+{% endblock %}
