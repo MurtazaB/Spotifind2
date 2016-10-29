@@ -37,3 +37,7 @@ def authenticate():
 @app.route('/user/most-recent')
 def mostRecentlyPlayed():
 	return "Test";
+
+@app.route('/discover')
+def discover():
+	return render_template('discover.html', pageName='Discover')
