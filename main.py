@@ -61,15 +61,18 @@ def authenticate():
 
 @app.route("/getFavorites")
 def getFavorites():
-    fav_url = "https://api.spotify/v1/me/top/tracks"
+    fav_url = "https://api.spotify/v1/me/top/tracks?limit=10"
     if "api_session_token" not in flask.session:
         return "Session not found"
-    print flask.session['api_session_token']
-    headers = {"Authorization": "Bearer {}".format(flask.session["api_session_token"])}
-    print "headers: " + str(headers)
-    fav_response = requests.get(fav_url, headers=headers)
-    print fav_response
-    return "Test";
+    fav_response = requests.get(fav_url)#, headers=headers)
+    response_data = json.loads(fav_response.text);
+
+    result = []
+
+    for i in response_data:
+        result.append(i['id'])
+
+    return result;
 
 @app.route('/discover')
 def discover():
