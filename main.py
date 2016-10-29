@@ -13,6 +13,7 @@ app.secret_key = 'superSecret'
 
 
 
+
 ## Needed for Bootstrap
 # Bootstrap(app)
 
@@ -32,7 +33,7 @@ SPOTIFY_API_URL = "{}/{}".format(SPOTIFY_API_BASE_URL, API_VERSION)
 CLIENT_SIDE_URL = "http://127.0.0.1"
 PORT = 5000
 REDIRECT_URI = "{}:{}/callback/q".format(CLIENT_SIDE_URL, PORT)
-SCOPE = "playlist-modify-public playlist-modify-private"
+SCOPE = "playlist-modify-public playlist-modify-private user-top-read streaming user-library-modify user-library-read"
 STATE = ""
 SHOW_DIALOG_bool = True
 SHOW_DIALOG_str = str(SHOW_DIALOG_bool).lower()
@@ -49,7 +50,8 @@ auth_query_parameters = {
 
 @app.route('/')
 def home():
-	return render_template('home.html', pageName='Home')
+    print('api_session_token' in session)
+    return render_template('home.html', pageName='Home')
 
 @app.route('/authenticate')
 def authenticate():
@@ -57,9 +59,17 @@ def authenticate():
 	auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
 	return redirect(auth_url)
 
-@app.route('/user/favorite')
-def mostFavorite():
-	return "Test";
+@app.route("/getFavorites")
+def getFavorites():
+    fav_url = "https://api.spotify/v1/me/top/tracks"
+    if "api_session_token" not in flask.session:
+        return "Session not found"
+    print flask.session['api_session_token']
+    headers = {"Authorization": "Bearer {}".format(flask.session["api_session_token"])}
+    print "headers: " + str(headers)
+    fav_response = requests.get(fav_url, headers=headers)
+    print fav_response
+    return "Test";
 
 @app.route('/discover')
 def discover():
@@ -84,9 +94,11 @@ def callback():
     refresh_token = response_data["refresh_token"]
     token_type = response_data["token_type"]
     expires_in = response_data["expires_in"]
+    session.modified = True;
 
-    flask.session['api_session_token'] = access_token
-    flask.session.modified = True;
+    session['api_session_token'] = access_token
+    session.modified = True;
+    print session['api_session_token'];
 
     print 'Session token ' + session['api_session_token'];
     # Auth Step 6: Use the access token to access Spotify API
@@ -101,7 +113,7 @@ def callback():
     playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
     playlists_response = requests.get(playlist_api_endpoint, headers=authorization_header)
     playlist_data = json.loads(playlists_response.text)
-    
+
     # Combine profile and playlist data to display
     display_arr = [profile_data] + playlist_data["items"];
     return render_template("index.html",sorted_array=display_arr)
