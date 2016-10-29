@@ -9,6 +9,7 @@ import base64
 # from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
+# app.run(host='0.0.0.0', port=5000)
 
 ## Needed for Bootstrap
 # Bootstrap(app)
