@@ -63,6 +63,7 @@ def mostRecentlyPlayed():
 
 @app.route('/discover')
 def discover():
+	# Set discoverList to provide the right information
 	discoverList = [1, 2, 3, 4, 5]
 	return render_template('discover.html', pageName='Discover', discoverList=discoverList)
 
