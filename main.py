@@ -61,6 +61,11 @@ def authenticate():
 def mostRecentlyPlayed():
 	return "Test";
 
+<<<<<<< HEAD
+@app.route('/discover')
+def discover():
+	return render_template('discover.html', pageName='Discover')
+=======
 @app.route("/callback/q")
 def callback():
     # Auth Step 4: Requests refresh and access tokens
@@ -101,3 +106,4 @@ def callback():
     # Combine profile and playlist data to display
     display_arr = [profile_data] + playlist_data["items"];
     return render_template("index.html",sorted_array=display_arr)
+>>>>>>> origin/master
