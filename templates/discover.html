@@ -3,7 +3,7 @@
 {% block content %}
 <style type="text/css">
 	.spacer {
-		padding-bottom: 15px;
+		/*padding-bottom: 5px;*/
 	}
 
 	.black-row {
@@ -20,6 +20,11 @@
 		width: 100%;
 	
 	}
+
+	.glyphicon {
+		color: #07BB4F;
+	}
+
 </style>
 
 <!-- Add carousel -->
@@ -36,7 +41,7 @@
 					<img src="http://placehold.it/150x150">
 				</div>
 				<div class="col-sm-6">
-					<h3>{{loop.index}}. Song Name</h3>
+					<h3>{{loop.index}}. Song Name <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></h3>
 					<p>Artist | Album</p>
 					<p>Genre</p>
 					<audio controls>
