@@ -97,7 +97,18 @@
 	
 
 	function post(id, track_id) {
-	    method = "post"; // Set method to post by default if not specified.
+		var postUrl = "https://api.spotify.com/v1/users/{{session['api_username']}}/playlists/{{session['playlist_id']}}/tracks"
+		var xhr = new XMLHttpRequest();
+
+		xhr.open("POST", postUrl, true);
+
+		xhr.setRequestHeader('Content-Type', 'application/json');
+		xhr.setRequestHeader('Authorization', 'Bearer ' + "{{session['api_session_token']}}");
+
+		xhr.send(JSON.stringify({
+			'uris' : ["spotify:track:" + track_id]
+		}))
+	/*    method = "post"; // Set method to post by default if not specified.
 	    path = "https://api.spotify.com/v1/users/{{session['api_username']}}/playlists/{{session['playlist_id']}}/tracks"
 	    params = {uri: "spotify%3Atrack%3A" + track_id, headers: {"Authorization": "Bearer " + "{{session['api_session_token']}}", "Content-Type": "application/json"} }
 	    // The rest of this code assumes you are not using a library.
@@ -119,7 +130,7 @@
 
 	    document.body.appendChild(form);
 	    form.submit();
-	    document.getElementById("playlist-btn" + id).style.display = "none";
+	    document.getElementById("playlist-btn" + id).style.display = "none";*/
 	}
 </script>
 
