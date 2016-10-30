@@ -91,7 +91,6 @@ def match():
 
     favorites = getFavorites();
 
-    #matchingSong = {"danceability" : 0,"energy" : 0,"loudness" : 0,"mode" : 0,"acousticness" : 0,"instrumentalness" : 0,"liveness" : 0,"valence" : 0,"tempo" : 0}
 
     favoriteQuery = ','.join(favorites)
     
@@ -101,8 +100,6 @@ def match():
     favorite_response = requests.get(appended_url, headers=authorization_header);
     response_data = json.loads(favorite_response.text)['audio_features'];
 
-    #for key in matchingSong:
-    #    matchingSong[key] += response_data[key] / 10
 
     library_response = requests.get(library_url, headers=authorization_header)
     library_response_data = json.loads(library_response.text)['items'];
@@ -174,7 +171,6 @@ def match():
         }
 
         mappedMatches[thisId] = [bestTrack, secondTrack]
-    print pprint.PrettyPrinter(depth=6).pprint(mappedMatches)
  
     output_list = []
     for key in mappedMatches:
@@ -243,9 +239,6 @@ def callback():
 
     session['api_session_token'] = access_token
     session.modified = True;
-    print session['api_session_token'];
-
-    print 'Session token ' + session['api_session_token'];
     # Auth Step 6: Use the access token to access Spotify API
     authorization_header = {"Authorization":"Bearer {}".format(access_token)}
 
@@ -254,6 +247,7 @@ def callback():
     profile_response = requests.get(user_profile_api_endpoint, headers=authorization_header)
     profile_data = json.loads(profile_response.text)
 
+    session['api_username'] = profile_data['id']
     # Get user playlist data
     playlist_api_endpoint = "{}/playlists".format(profile_data["href"])
     playlists_response = requests.get(playlist_api_endpoint, headers=authorization_header)
