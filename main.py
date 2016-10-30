@@ -5,6 +5,7 @@ import json
 import urllib
 import base64
 import pprint
+from sets import Set
 import html2text
 
 ## For Bootstrap templates
@@ -154,6 +155,8 @@ def match():
 
     keys = ['danceability', 'energy', 'loudness', 'mode', 'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo']
 
+    added = Set();
+
     for item in response_data:
 
         thisId = item['id'];
@@ -171,7 +174,8 @@ def match():
             total = 0
             difference = 0
 
-
+            if (playlistSong['id'] in added):
+                continue;
             for key in keys:
                 difference = abs(item[key] - playlistSong[key])
                 total += difference
@@ -209,6 +213,9 @@ def match():
         }
 
         mappedMatches[thisId] = [bestTrack, secondTrack]
+        added.add(secondTrack['id'])
+        added.add(bestTrack['id'])
+
 
     output_list = []
     for key in mappedMatches:
