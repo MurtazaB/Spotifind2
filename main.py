@@ -73,6 +73,7 @@ def getFavorites():
     authorization_header = {"Authorization":"Bearer {}".format(session["api_session_token"])}
     fav_response = requests.get(fav_url, headers=authorization_header)
     response_data = json.loads(fav_response.text)['items'];
+    #print pprint.PrettyPrinter(depth=6).pprint(response_data)
 
     result = []
 
@@ -89,7 +90,8 @@ def match():
         return redirect("127.0.0.1:5000")
 
     favorites = getFavorites();
-    averages = {"danceability" : 0,"energy" : 0,"loudness" : 0,"mode" : 0,"acousticness" : 0,"instrumentalness" : 0,"liveness" : 0,"valence" : 0,"tempo" : 0}
+
+    #matchingSong = {"danceability" : 0,"energy" : 0,"loudness" : 0,"mode" : 0,"acousticness" : 0,"instrumentalness" : 0,"liveness" : 0,"valence" : 0,"tempo" : 0}
 
     favoriteQuery = ','.join(favorites)
     
@@ -97,16 +99,15 @@ def match():
     authorization_header = {"Authorization":"Bearer {}".format(session['api_session_token'])}
     appended_url = query_url + '?ids=' + favoriteQuery
     favorite_response = requests.get(appended_url, headers=authorization_header);
-    response_data = json.loads(favorite_response.text)['audio_features'][0];
+    response_data = json.loads(favorite_response.text)['audio_features'];
 
-    for key in averages:
-        averages[key] = response_data[key] / 10
+    #for key in matchingSong:
+    #    matchingSong[key] += response_data[key] / 10
 
     library_response = requests.get(library_url, headers=authorization_header)
     library_response_data = json.loads(library_response.text)['items'];
 
-    listed_library_ids = [];
-
+    listed_library_ids = []; 
     for thisItem in library_response_data:
         listed_library_ids.append(thisItem['track']['id'])
 
@@ -114,28 +115,45 @@ def match():
     library_response = requests.get(libraryQualityUrl, headers=authorization_header)
     library_quality_data = json.loads(library_response.text)['audio_features']
 
-    sortedList = [];
+    mappedMatches = {}
 
-    for item in library_quality_data:
-        total = 0
-        for key in averages:
-            difference = abs(item[key] - averages[key])
-            total += difference
-        item['difference'] = total;
-        sortedList.append(item);
+    keys = ['danceability', 'energy', 'loudness', 'mode', 'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo']    
 
-    sortedList = sorted(sortedList, key=lambda b: b['difference']);
+    for item in response_data:
 
-    bestIds = []
+        thisId = item['id'];
 
-    for i in range(0, 10):
-        bestIds.append(sortedList[i]['id']);
 
-    finalResponse = requests.get("https://api.spotify.com/v1/tracks?ids=" + ','.join(bestIds), headers=authorization_header);
-    finalData = json.loads(finalResponse.text)['tracks'];
-    output_list = []
-    for track in finalData:
-        track_dict = {
+        bestId = -1;
+        bestTotal = 100000
+
+        secondBestId = -1;
+        secondBestTotal = 100000
+
+        print library_quality_data[0];
+        for playlistSong in library_quality_data:
+
+
+            total = 0
+            difference = 0
+
+
+            for key in keys:
+                difference = abs(item[key] - playlistSong[key])
+                total += difference
+
+            if (difference < bestTotal):
+                secondBestId = bestId
+                secondBestTotal = bestTotal
+
+                bestId = playlistSong['id']
+                bestTotal = difference
+
+        finalResponse = requests.get("https://api.spotify.com/v1/tracks?ids=" + bestId+","+secondBestId, headers=authorization_header);
+        responseResult = json.loads(finalResponse.text)['tracks'];
+        track = responseResult[0];
+
+        bestTrack = {
         "title":track["name"],
         "artist":track["artists"][0]["name"],
         "id":track["id"],
@@ -144,9 +162,29 @@ def match():
         "preview_url":track["preview_url"],
         "uri":track["uri"]
         }
-        #print track_dict
-        output_list.append(track_dict)
-    print output_list
+
+        track = responseResult[1];
+        secondTrack = {
+        "title":track["name"],
+        "artist":track["artists"][0]["name"],
+        "id":track["id"],
+        "picture":track["album"]["images"][1]["url"], #gives image URL
+        "album":track["album"]["name"],
+        "preview_url":track["preview_url"],
+        "uri":track["uri"]
+        }
+
+        mappedMatches[thisId] = [bestTrack, secondTrack]
+    
+    output_list = []
+    for key in mappedMatches:
+        for value in mappedMatches[key]:
+            value['matched_item'] = key
+            output_list.append(value)
+
+    #print pprint.PrettyPrinter(depth=6).pprint(mappedMatches)
+    print pprint.PrettyPrinter(depth=6).pprint(output_list)
+
     return "success"
 
 
