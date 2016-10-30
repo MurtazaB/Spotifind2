@@ -29,9 +29,8 @@
         <span class="icon-bar"></span>
       </button>
       <ul class="nav navbar-nav">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Discover</a></li>
-        <li><a href="#">About</a></li>
+        <li><a href="/">Home</a></li>
+        <li><a href="/match">Discover</a></li>
       </ul>
     </div>
 
@@ -81,7 +80,7 @@
 <script>
     $(document).ready(function(){
       $(window).scroll(function() { // check if scroll event happened
-        if ($(document).scrollTop() > 50) { // check if user scrolled more than 50 from top of the browser window
+        if ($(document).scrollTop() > 100) { // check if user scrolled more than 50 from top of the browser window
           $(".navbar-fixed-top").css("background-color", "#181818"); // if yes, then change the color of class "navbar-fixed-top" to white (#f8f8f8)
         } else {
           $(".navbar-fixed-top").css("background-color", "transparent"); // if not, change it back to transparent
