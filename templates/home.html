@@ -43,13 +43,25 @@
     background: rgba(0, 0, 0, 0); important!*/
 }
 
+.authenticate-btn {
+    bottom: 25%;
+    text-align: center;
+}
+
+.btn-lg.round {
+    border-radius: 100px;
+}
+
 </style>
 
 
 <div class="container">
     <div class="jumbotron">
       <h1 align="center">Welcome </h1>
+      <!-- Indicates a successful or positive action -->
+     <div class="authenticate-btn btn-lg"><a role="button" href="/authenticate" class="btn btn-success">Authenticate</a></div>
     </div>
 
 </div>
+
 {% endblock %}
