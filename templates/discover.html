@@ -15,7 +15,7 @@
 		background-color: #282828;
 		color: white;
 	}
-	
+
 	.infoWell {
 		background-color: #3D3D3D;
 		border-color: #2E2E2E;
@@ -23,7 +23,7 @@
 
 	.listing-row {
 		width: 100%;
-	
+
 	}
 
 	.glyphicon {
@@ -81,7 +81,7 @@
 				<div class="row">
 					<div class="collapse" id="collapse{{loop.index}}">
 					  <div class="well infoWell">
-					    How’s business? Boomin. The key to more success is to get a massage once a week, very important, major key, cloth talk. In life you have to take the trash out, if you have trash in your life, take it out, throw it away, get rid of it, major key. Cloth talk. To be successful you’ve got to work hard, to make history, simple, you’ve got to make it. Special cloth alert. The key to more success is to get a massage once a week, very important, major key, cloth talk.
+					    <p>((blurb_list[song['title']]))</p>
 					  </div>
 					</div>
 				</div>
@@ -94,7 +94,7 @@
 
 
 <script type="text/javascript">
-	
+
 
 	function post(id, track_id) {
 		var postUrl = "https://api.spotify.com/v1/users/{{session['api_username']}}/playlists/{{session['playlist_id']}}/tracks"

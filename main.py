@@ -102,7 +102,7 @@ def playlistExists():
     return False
 
 def createPlaylistIfNeeded():
-    if playlistExists(): 
+    if playlistExists():
         return
 
     if 'api_username' not in flask.session:
@@ -111,7 +111,7 @@ def createPlaylistIfNeeded():
     query_url = "https://api.spotify.com/v1/users/{}/playlists".format(session['api_username'])
     query_url = query_url + '?name=Spotifind'
     authorization_header = {"Authorization":"Bearer {}".format(session["api_session_token"])}
-    
+
     response = requests.post(query_url, data=json.dumps(payload),headers=authorization_header)
     response_data = json.loads(response.text)
     session['playlist_id'] = response_data['id']
