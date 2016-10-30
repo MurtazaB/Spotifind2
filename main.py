@@ -9,14 +9,14 @@ import base64
 # from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
-<<<<<<< HEAD
+# <<<<<<< HEAD
 # app.run(host='0.0.0.0', port=5000)
-=======
+# =======
 app.secret_key = 'superSecret'
 
 
 
->>>>>>> 4f5bb289b9ef6d8ff4e07386b88efc183a78bfaa
+# >>>>>>> 4f5bb289b9ef6d8ff4e07386b88efc183a78bfaa
 
 ## Needed for Bootstrap
 # Bootstrap(app)

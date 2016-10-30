@@ -3,7 +3,7 @@
 {% block content %}
 <!-- Add home page content here -->
 <style type="text/css">
-    html {
+    body {
       background: url(../static/images/skybackground.jpg) no-repeat center center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
@@ -11,5 +11,41 @@
       background-size: cover;
     }
 
+.vertical-center {
+  height:100%;
+  width:100%;
+
+  text-align: center;  /* align the inline(-block) elements horizontally */
+  font: 0/0 a;         /* remove the gap between inline(-block) elements */
+}
+
+.vertical-center:before {    /* create a full-height inline block pseudo=element */
+  content: " ";
+  display: inline-block;
+  vertical-align: middle;    /* vertical alignment of the inline element */
+  height: 100%;
+}
+
+.vertical-center > .container {
+  max-width: 100%;
+
+  display: inline-block;
+  vertical-align: middle;  /* vertical alignment of the inline element */
+                           /* reset the font property */
+  font: 50px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.jumbotron {
+    margin-top: 300px;
+    margin-bottom: 300px;
+    font-size: 70px;
+}
+
 </style>
+<div class="container">
+    <div class="jumbotron">
+      <h1 align="center">Welcome </h1>
+    </div>
+
+</div>
 {% endblock %}
