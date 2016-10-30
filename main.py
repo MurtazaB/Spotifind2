@@ -49,6 +49,7 @@ auth_query_parameters = {
 
 @app.route('/')
 def home():
+    createPlaylistIfNeeded();
     print('api_session_token' in session)
     return render_template('home.html', pageName='Home')
 
@@ -81,6 +82,43 @@ def getFavorites():
         result.append(i['id'])
 
     return result
+
+def playlistExists():
+    if "api_session_token" not in flask.session:
+        return False
+
+    query_url = "https://api.spotify.com/v1/me/playlists"
+    authorization_header = {"Authorization":"Bearer {}".format(session["api_session_token"])}
+    response = requests.get(query_url, headers=authorization_header)
+    response_data = json.loads(response.text)['items']
+
+
+    for item in response_data:
+        if item['name'] == 'Spotifind':
+            session['playlist_id'] = item['id']
+            print 'playlist id ' + session['playlist_id']
+            return True
+    return False
+
+def createPlaylistIfNeeded():
+    if playlistExists(): 
+        return
+
+    if 'api_username' not in flask.session:
+        print 'playlist id ' + session['playlist_id']
+        return
+    payload = {'name' : 'Spotifind'}
+    query_url = "https://api.spotify.com/v1/users/{}/playlists".format(session['api_username'])
+    query_url = query_url + '?name=Spotifind'
+    authorization_header = {"Authorization":"Bearer {}".format(session["api_session_token"])}
+    
+    response = requests.post(query_url, data=json.dumps(payload),headers=authorization_header)
+    response_data = json.loads(response.text)
+    session['playlist_id'] = response_data['id']
+
+    print 'playlist created: ' + session['playlist_id']
+
+
 
 @app.route('/match')
 def match():
