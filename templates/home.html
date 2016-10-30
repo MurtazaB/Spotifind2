@@ -4,7 +4,7 @@
 <!-- Add home page content here -->
 <style type="text/css">
     body {
-      background: url(../static/images/skybackground.jpg) no-repeat center center fixed;
+      background: url(../static/images/concert_background.jpg) no-repeat center center fixed;
       -webkit-background-size: cover;
       -moz-background-size: cover;
       -o-background-size: cover;
@@ -37,12 +37,15 @@
 }
 
 .jumbotron {
-    margin-top: 300px;
-    margin-bottom: 300px;
-    font-size: 70px;
+    margin-top: 200px;
+    font-size: 60px;
+    font-weight: 400;
+    line-height: 1;
+    display: block;
+    font-family: Circular, Helvetica, Arial, sans-serif;
     color: white;
     background: rgba(0, 0, 0, 0); important!*/
-    font: proxima_nova, "Helvetica Neue", Helvetica, Arial, sans-serif;;
+    font: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .authenticate-btn {
@@ -62,7 +65,12 @@
     letter-spacing: 1.2px;
     text-transform: uppercase;
     min-width: 130px;
-    font: "Circular",Helvetica,Arial,sans-serif;;
+    font: Circular, Helvetica, Arial, sans-serif;
+}
+
+.lead {
+    margin-top: 5px;
+    font-size: 14px;
 }
 
 </style>
@@ -70,9 +78,10 @@
 
 <div class="container">
     <div class="jumbotron">
-      <h1 align="center">WELCOME </h1>
+      <h1 align="center">Encounter. Experience. Enjoy.</h1>
       <!-- Indicates a successful or positive action -->
      <div class="authenticate-btn"><a role="button" href="/authenticate" class="btn btn-success">Authenticate</a></div>
+     <p class="lead" align="center"> Explore more songs, faster than ever. </p>
     </div>
 
 </div>
