@@ -80,11 +80,11 @@ def discover():
 
     disc_url = "https://api.spotify.com/v1/recommendations?limit=10&seed_tracks={}".format(fav_str)
     if "api_session_token" not in session:
-        return "Session not found"
+        return redirect("127.0.0.1:5000/")
     authorization_header = {"Authorization":"Bearer {}".format(session['api_session_token'])}
     disc_response = requests.get(disc_url, headers=authorization_header)
     response_data = json.loads(disc_response.text);
-
+ 
     output_list = []
     for track in response_data["tracks"]:
         track_dict = {
