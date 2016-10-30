@@ -303,7 +303,7 @@ def callback():
 
     # Combine profile and playlist data to display=
     display_arr = [profile_data] + playlist_data["items"];
-    return redirect('http://127.0.0.1:5000/')
+    return redirect('http://127.0.0.1:5000/match')
 
 def getTopTenSongnames(match_output_dict):
     output_list = []
