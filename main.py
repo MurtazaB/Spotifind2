@@ -5,6 +5,7 @@ import json
 import urllib
 import base64
 import pprint
+import html2text
 
 ## For Bootstrap templates
 # from flask_bootstrap import Bootstrap
@@ -123,7 +124,7 @@ def createPlaylistIfNeeded():
 @app.route('/match')
 def match():
     library_url = 'https://api.spotify.com/v1/users/12127542408/playlists/1GBIt73qNiPXpj5ypOEI4d/tracks'
-    
+
     if "api_session_token" not in session:
         return redirect("127.0.0.1:5000")
 
@@ -131,7 +132,7 @@ def match():
 
 
     favoriteQuery = ','.join(favorites)
-    
+
     query_url = "https://api.spotify.com/v1/audio-features"
     authorization_header = {"Authorization":"Bearer {}".format(session['api_session_token'])}
     appended_url = query_url + '?ids=' + favoriteQuery
@@ -142,7 +143,7 @@ def match():
     library_response = requests.get(library_url, headers=authorization_header)
     library_response_data = json.loads(library_response.text)['items'];
 
-    listed_library_ids = []; 
+    listed_library_ids = [];
     for thisItem in library_response_data:
         listed_library_ids.append(thisItem['track']['id'])
 
@@ -152,7 +153,7 @@ def match():
 
     mappedMatches = {}
 
-    keys = ['danceability', 'energy', 'loudness', 'mode', 'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo']    
+    keys = ['danceability', 'energy', 'loudness', 'mode', 'acousticness', 'instrumentalness', 'liveness', 'valence', 'tempo']
 
     for item in response_data:
 
@@ -209,20 +210,23 @@ def match():
         }
 
         mappedMatches[thisId] = [bestTrack, secondTrack]
- 
+
     output_list = []
     for key in mappedMatches:
         originalInfo = requests.get("https://api.spotify.com/v1/tracks/" + key, headers=authorization_header);
         responseResult = json.loads(originalInfo.text);
         name = responseResult['name'] + ' by ' + responseResult['album']['artists'][0]['name']
         for value in mappedMatches[key]:
-            value['matched_item'] = name            
+            value['matched_item'] = name
             output_list.append(value)
 
+    #calling getBlurb() and passing it out with render_template
+    only_songnames_list = getTopTenSongnames(output_list)
+    blurb_list = getBlurb(only_songnames_list)
 
     output_list = sorted(output_list, key=lambda b: b['id'])
     print pprint.PrettyPrinter(depth=6).pprint(output_list)
-    return render_template('discover.html', pageName='Discover',discoverList=output_list)
+    return render_template('discover.html', pageName='Discover',discoverList=output_list, blurb_list=blurb_list)
 
 
 @app.route('/discover')
@@ -237,7 +241,7 @@ def discover():
     authorization_header = {"Authorization":"Bearer {}".format(session['api_session_token'])}
     disc_response = requests.get(disc_url, headers=authorization_header)
     response_data = json.loads(disc_response.text);
- 
+
     output_list = []
     for track in response_data["tracks"]:
         track_dict = {
@@ -294,3 +298,31 @@ def callback():
     # Combine profile and playlist data to display=
     display_arr = [profile_data] + playlist_data["items"];
     return redirect('http://127.0.0.1:5000/')
+
+def getTopTenSongnames(match_output_dict):
+    output_list = []
+    for track_dict in match_output_dict:
+        #print track_dict["title"]
+        output_list.append(track_dict["title"])
+    return output_list
+
+def getBlurb(songname_list):
+    input_list = songname_list
+    wiki_urls = []
+    for song in input_list:
+        song = urllib.quote(song.encode('utf8'))
+        wiki_api_url = "https://en.wikipedia.org/w/api.php?action=query&prop=extracts&exintro&generator=allpages&gaplimit=1&gapfilterredir=nonredirects&gapfrom={}&format=json".format(song)
+        #print wiki_api_url
+        wiki_urls.append(wiki_api_url)
+
+    output_list = []
+    h = html2text.HTML2Text()
+    for page in wiki_urls:
+        r = requests.get(page)
+        r1 = json.loads(r.text)
+        for key_pagenum in r1['query']['pages'].keys():
+            rawtext = r1['query']['pages'][key_pagenum]['extract']
+        blurb = h.handle(rawtext)
+        output_list.append(blurb)
+
+    return output_list
