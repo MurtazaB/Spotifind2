@@ -147,7 +147,7 @@ def match():
         #print track_dict
         output_list.append(track_dict)
     print output_list
-    return "success"
+    return render_template('discover.html', pageName='Discover',discoverList=output_list)
 
 
 @app.route('/discover')
