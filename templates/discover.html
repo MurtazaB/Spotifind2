@@ -65,7 +65,7 @@
 				</div>
 				<div class="col-sm-10">
 					<h3>{{loop.index}}. {{song['title']}} 
-						<button id="playlist-btn{{loop.index}}" onClick="post({{loop.index}}, song['id'])" class="btn btn-default">Add to playlist</button>
+						<button id="playlist-btn{{loop.index}}" onClick="post({{loop.index}}, '{{song['id']}}' )" class="btn btn-default">Add to playlist</button>
 					</h3>
 					<p>{{song['artist']}} | {{song['album']}}</p>
 					<p><small>Since you listened to {{song['matched_item']}}</small></p>
@@ -96,10 +96,10 @@
 <script type="text/javascript">
 	
 
-	function post(id, track_id, method) {
-	    method = method || "post"; // Set method to post by default if not specified.
+	function post(id, track_id) {
+	    method = "post"; // Set method to post by default if not specified.
 	    path = "https://api.spotify.com/v1/users/{{session['api_username']}}/playlists/{{session['playlist_id']}}/tracks"
-	    params = {uri: "spotify%3Atrack%3A" + track_id}
+	    params = {uri: "spotify%3Atrack%3A" + track_id, headers: {"Authorization": "Bearer " + "{{session['api_session_token']}}", "Content-Type": "application/json"} }
 	    // The rest of this code assumes you are not using a library.
 	    // It can be made less wordy if you use one.
 	    var form = document.createElement("form");
