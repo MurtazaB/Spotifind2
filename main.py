@@ -130,7 +130,6 @@ def match():
         secondBestId = -1;
         secondBestTotal = 100000
 
-        print library_quality_data[0];
         for playlistSong in library_quality_data:
 
 
@@ -175,12 +174,17 @@ def match():
         }
 
         mappedMatches[thisId] = [bestTrack, secondTrack]
-    
+    print pprint.PrettyPrinter(depth=6).pprint(mappedMatches)
+ 
     output_list = []
     for key in mappedMatches:
+        originalInfo = requests.get("https://api.spotify.com/v1/tracks/" + key, headers=authorization_header);
+        responseResult = json.loads(originalInfo.text);
+        name = responseResult['name'] + ' by ' + responseResult['album']['artists'][0]['name']
         for value in mappedMatches[key]:
-            value['matched_item'] = key
+            value['matched_item'] = name            
             output_list.append(value)
+
 
     print pprint.PrettyPrinter(depth=6).pprint(output_list)
     return render_template('discover.html', pageName='Discover',discoverList=output_list)

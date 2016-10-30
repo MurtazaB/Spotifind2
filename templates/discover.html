@@ -61,6 +61,7 @@
 					<h3>{{loop.index}}. {{song['title']}} 
 						<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
 					</h3>
+					<p>Matched by {{song['matched_item']}}</p>
 					<p>{{song['artist']}} | {{song['album']}}</p>
 					<audio controls>
 					  <source src="{{ song['preview_url'] }}">
