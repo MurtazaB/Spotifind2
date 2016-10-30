@@ -98,7 +98,7 @@
 
 	function post(id, track_id, method) {
 	    method = method || "post"; // Set method to post by default if not specified.
-	    path = "https://api.spotify.com/v1/users/{{session['api_username']}}/playlists/{{session['api_playlist']}}/tracks"
+	    path = "https://api.spotify.com/v1/users/{{session['api_username']}}/playlists/{{session['playlist_id']}}/tracks"
 	    params = {uri: "spotify%3Atrack%3A" + track_id}
 	    // The rest of this code assumes you are not using a library.
 	    // It can be made less wordy if you use one.
