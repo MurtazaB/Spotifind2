@@ -25,6 +25,11 @@
 		color: #07BB4F;
 	}
 
+	.album-image {
+		max-width: 150px;
+		max-width: 150px;
+	}
+
 </style>
 
 <!-- Add carousel -->
@@ -32,20 +37,22 @@
 
 <!-- Add list of items -->
 <!-- <div class="container"> -->
-	{% for each in discoverList %}
+	{% for song in discoverList %}
 	<div class="{{ 'gray' if (loop.index % 2) ==1 else 'black' }}-row listing-row">
 		<div class="container">
 			<div class="spacer"></div>
 			<div class="row">
 				<div class="col-sm-2">
-					<img src="http://placehold.it/150x150">
+					<img class="album-image" src="{{ song['picture'] }}">
 				</div>
 				<div class="col-sm-6">
-					<h3>{{loop.index}}. Song Name <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></h3>
-					<p>Artist | Album</p>
-					<p>Genre</p>
+					<h3>{{loop.index}}. {{song['title']}} 
+						<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
+					</h3>
+					<p>{{song['artist']}} | {{song['album']}}</p>
+					<!-- <p>Genre</p> -->
 					<audio controls>
-					  <source src="https://p.scdn.co/mp3-preview/12b8cee72118f995f5494e1b34251e4ac997445e">
+					  <source src="{{ song['preview_url'] }}">
 					Unable to generate a preview for this song.
 					</audio>
 				</div>

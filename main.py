@@ -10,6 +10,7 @@ import pprint
 # from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
+
 app.secret_key = 'superSecret'
 
 ## Needed for Bootstrap
@@ -56,6 +57,14 @@ def authenticate():
 	url_args = "&".join(["{}={}".format(key,urllib.quote(val)) for key,val in auth_query_parameters.iteritems()])
 	auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
 	return redirect(auth_url)
+
+
+# @app.route('/discover')
+# def discover():
+# 	# Set discoverList to provide the right information
+# 	discoverList = [1, 2, 3, 4, 5]
+# 	return render_template('discover.html', pageName='Discover', discoverList=discoverList)
+
 
 def getFavorites():
     fav_url = "https://api.spotify.com/v1/me/top/tracks?limit=5"
@@ -151,7 +160,7 @@ def discover():
         #print track_dict
         output_list.append(track_dict)
     print pprint.PrettyPrinter(depth=6).pprint(output_list)
-    return render_template('discover.html', pageName='Discover',discover_list=output_list)
+    return render_template('discover.html', pageName='Discover',discoverList=output_list)
 
 @app.route("/callback/q")
 def callback():
