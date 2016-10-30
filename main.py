@@ -60,8 +60,6 @@ def authenticate():
 	return redirect(auth_url)
 
 
-
-
 @app.route('/discover')
 def discover():
 	# Set discoverList to provide the right information
