@@ -9,8 +9,14 @@ import base64
 # from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
+<<<<<<< HEAD
+# app.run(host='0.0.0.0', port=5000)
+=======
 app.secret_key = 'superSecret'
 
+
+
+>>>>>>> 4f5bb289b9ef6d8ff4e07386b88efc183a78bfaa
 
 ## Needed for Bootstrap
 # Bootstrap(app)
@@ -57,14 +63,6 @@ def authenticate():
 	auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
 	return redirect(auth_url)
 
-
-@app.route('/discover')
-def discover():
-	# Set discoverList to provide the right information
-	discoverList = [1, 2, 3, 4, 5]
-	return render_template('discover.html', pageName='Discover', discoverList=discoverList)
-
-
 @app.route("/getFavorites")
 def getFavorites():
     fav_url = "https://api.spotify/v1/me/top/tracks?limit=10"
@@ -81,19 +79,19 @@ def getFavorites():
 
     return result;
 
-# @app.route('/discover')
-# def discover():
-#     favorites = getFavorites()
-#     fav_str = ','.join(favorites)
-#     disc_url = "https://api.spotify.com/v1/recommendations?seed_tracks={}".format(fav_str)
-#     if "api_session_token" not in flask.session:
-#         return "Session not found"
-#     authorization_header = {"Authorization":"Bearer {}".format(access_token)}
-#     disc_response = requests.get(disc_url, headers=authorization_header)
-#     response_data = json.loads(disc_response.text);
-#     print response_data
+@app.route('/discover')
+def discover():
+    favorites = getFavorites()
+    fav_str = ','.join(favorites)
+    disc_url = "https://api.spotify.com/v1/recommendations?seed_tracks={}".format(fav_str)
+    if "api_session_token" not in flask.session:
+        return "Session not found"
+    authorization_header = {"Authorization":"Bearer {}".format(access_token)}
+    disc_response = requests.get(disc_url, headers=authorization_header)
+    response_data = json.loads(disc_response.text);
+    print response_data
 
-#     return render_template('discover.html', pageName='Discover')
+    return render_template('discover.html', pageName='Discover')
 
 @app.route("/callback/q")
 def callback():

@@ -25,6 +25,10 @@
 		color: #07BB4F;
 	}
 
+	[data-hidden="hidden"] {
+	   display: none; /* OR */
+	   visibility: hidden; /* If you want to reserve space */
+	}
 </style>
 
 <!-- Add carousel -->
@@ -41,7 +45,9 @@
 					<img src="http://placehold.it/150x150">
 				</div>
 				<div class="col-sm-6">
-					<h3>{{loop.index}}. Song Name <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></h3>
+					<h3>{{loop.index}}. Song Name 
+						<a onClick=""><span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span></a>
+					</h3>
 					<p>Artist | Album</p>
 					<p>Genre</p>
 					<audio controls>
@@ -78,6 +84,7 @@
 	    }
 
 	    document.body.appendChild(form);
+	    this.setAttribute("data-hidden", "hidden");
 	    form.submit();
 	}
 </script>
