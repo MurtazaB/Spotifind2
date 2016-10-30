@@ -186,6 +186,7 @@ def match():
             output_list.append(value)
 
 
+    output_list = sorted(output_list, key=lambda b: b['id'])
     print pprint.PrettyPrinter(depth=6).pprint(output_list)
     return render_template('discover.html', pageName='Discover',discoverList=output_list)
 
