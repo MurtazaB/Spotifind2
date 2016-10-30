@@ -12,10 +12,6 @@ import pprint
 app = Flask(__name__)
 app.secret_key = 'superSecret'
 
-<<<<<<< HEAD
-
-=======
->>>>>>> origin/master
 ## Needed for Bootstrap
 # Bootstrap(app)
 
@@ -61,18 +57,14 @@ def authenticate():
 	auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
 	return redirect(auth_url)
 
-<<<<<<< HEAD
 
-@app.route('/discover')
-def discover():
-	# Set discoverList to provide the right information
-	discoverList = [1, 2, 3, 4, 5]
-	return render_template('discover.html', pageName='Discover', discoverList=discoverList)
+# @app.route('/discover')
+# def discover():
+# 	# Set discoverList to provide the right information
+# 	discoverList = [1, 2, 3, 4, 5]
+# 	return render_template('discover.html', pageName='Discover', discoverList=discoverList)
 
 
-@app.route("/getFavorites")
-=======
->>>>>>> origin/master
 def getFavorites():
     fav_url = "https://api.spotify.com/v1/me/top/tracks?limit=5"
     if "api_session_token" not in flask.session:
@@ -88,21 +80,7 @@ def getFavorites():
 
     return result
 
-<<<<<<< HEAD
-# @app.route('/discover')
-# def discover():
-#     favorites = getFavorites()
-#     fav_str = ','.join(favorites)
-#     disc_url = "https://api.spotify.com/v1/recommendations?seed_tracks={}".format(fav_str)
-#     if "api_session_token" not in flask.session:
-#         return "Session not found"
-#     authorization_header = {"Authorization":"Bearer {}".format(access_token)}
-#     disc_response = requests.get(disc_url, headers=authorization_header)
-#     response_data = json.loads(disc_response.text);
-#     print response_data
 
-#     return render_template('discover.html', pageName='Discover')
-=======
 @app.route('/discover')
 def discover():
     favorites = getFavorites()
@@ -130,8 +108,7 @@ def discover():
         #print track_dict
         output_list.append(track_dict)
     print pprint.PrettyPrinter(depth=6).pprint(output_list)
-    return render_template('discover.html', pageName='Discover',discover_list=output_list)
->>>>>>> origin/master
+    return render_template('discover.html', pageName='Discover',discoverList=output_list)
 
 @app.route("/callback/q")
 def callback():
