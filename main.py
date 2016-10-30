@@ -4,6 +4,7 @@ import requests
 import json
 import urllib
 import base64
+import pprint
 
 ## For Bootstrap templates
 # from flask_bootstrap import Bootstrap
@@ -88,14 +89,16 @@ def discover():
     for track in response_data["tracks"]:
         track_dict = {
         "title":track["name"],
-        "artist":track["artists"]["name"],
-        "id":track["id"]
-        "picture":track["album"]["images"][1]["url"] #gives image URL
-        "album":track["album"]["name"]
-        "preview_url":track["preview_url"]
+        "artist":track["artists"][0]["name"],
+        "id":track["id"],
+        "picture":track["album"]["images"][1]["url"], #gives image URL
+        "album":track["album"]["name"],
+        "preview_url":track["preview_url"],
+        "uri":track["uri"]
         }
-        output_list.extend(track_dict)
-
+        #print track_dict
+        output_list.append(track_dict)
+    print pprint.PrettyPrinter(depth=6).pprint(output_list)
     return render_template('discover.html', pageName='Discover',discover_list=output_list)
 
 @app.route("/callback/q")
@@ -137,6 +140,6 @@ def callback():
     playlists_response = requests.get(playlist_api_endpoint, headers=authorization_header)
     playlist_data = json.loads(playlists_response.text)
 
-    # Combine profile and playlist data to display
+    # Combine profile and playlist data to display=
     display_arr = [profile_data] + playlist_data["items"];
-    return redirect('http://127.0.0.1:8080/')
+    return redirect('http://127.0.0.1:5000/')
