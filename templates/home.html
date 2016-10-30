@@ -11,6 +11,7 @@
       background-size: cover;
     }
 
+
 .vertical-center {
   height:100%;
   width:100%;
@@ -39,6 +40,22 @@
     margin-top: 300px;
     margin-bottom: 300px;
     font-size: 70px;
+    color: white;
+    background: rgba(0, 0, 0, 0); important!*/
+}
+
+.authenticate-btn {
+    bottom: 25%;
+    text-align: center;
+}
+
+.btn {
+    border-radius: 24px;
+    background-color: #07BB4F;
+    border-color: #07BB4F;
+    padding-left: 55px;
+    padding-right: 55px;
+    font-size: .25em;
 }
 
 </style>
@@ -47,7 +64,10 @@
 <div class="container">
     <div class="jumbotron">
       <h1 align="center">Welcome </h1>
+      <!-- Indicates a successful or positive action -->
+     <div class="authenticate-btn"><a role="button" href="/authenticate" class="btn btn-success">Authenticate</a></div>
     </div>
 
 </div>
+
 {% endblock %}

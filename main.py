@@ -81,6 +81,74 @@ def getFavorites():
 
     return result
 
+@app.route('/match')
+def match():
+    library_url = 'https://api.spotify.com/v1/users/12127542408/playlists/1GBIt73qNiPXpj5ypOEI4d/tracks'
+    
+    if "api_session_token" not in session:
+        return redirect("127.0.0.1:5000")
+
+    favorites = getFavorites();
+    averages = {"danceability" : 0,"energy" : 0,"loudness" : 0,"mode" : 0,"acousticness" : 0,"instrumentalness" : 0,"liveness" : 0,"valence" : 0,"tempo" : 0}
+
+    favoriteQuery = ','.join(favorites)
+    
+    query_url = "https://api.spotify.com/v1/audio-features"
+    authorization_header = {"Authorization":"Bearer {}".format(session['api_session_token'])}
+    appended_url = query_url + '?ids=' + favoriteQuery
+    favorite_response = requests.get(appended_url, headers=authorization_header);
+    response_data = json.loads(favorite_response.text)['audio_features'][0];
+
+    for key in averages:
+        averages[key] = response_data[key] / 10
+
+    library_response = requests.get(library_url, headers=authorization_header)
+    library_response_data = json.loads(library_response.text)['items'];
+
+    listed_library_ids = [];
+
+    for thisItem in library_response_data:
+        listed_library_ids.append(thisItem['track']['id'])
+
+    libraryQualityUrl = query_url + "?ids=" + ",".join(listed_library_ids);
+    library_response = requests.get(libraryQualityUrl, headers=authorization_header)
+    library_quality_data = json.loads(library_response.text)['audio_features']
+
+    sortedList = [];
+
+    for item in library_quality_data:
+        total = 0
+        for key in averages:
+            difference = abs(item[key] - averages[key])
+            total += difference
+        item['difference'] = total;
+        sortedList.append(item);
+
+    sortedList = sorted(sortedList, key=lambda b: b['difference']);
+
+    bestIds = []
+
+    for i in range(0, 10):
+        bestIds.append(sortedList[i]['id']);
+
+    finalResponse = requests.get("https://api.spotify.com/v1/tracks?ids=" + ','.join(bestIds), headers=authorization_header);
+    finalData = json.loads(finalResponse.text)['tracks'];
+    output_list = []
+    for track in finalData:
+        track_dict = {
+        "title":track["name"],
+        "artist":track["artists"][0]["name"],
+        "id":track["id"],
+        "picture":track["album"]["images"][1]["url"], #gives image URL
+        "album":track["album"]["name"],
+        "preview_url":track["preview_url"],
+        "uri":track["uri"]
+        }
+        #print track_dict
+        output_list.append(track_dict)
+    print output_list
+    return "success"
+
 
 @app.route('/discover')
 def discover():
