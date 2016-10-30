@@ -221,11 +221,11 @@ def match():
 
     #calling getBlurb() and passing it out with render_template
     only_songnames_list = getTopTenSongnames(output_list)
-    blurb_list = getBlurb(only_songnames_list)
+    blurb_dict = getBlurb(only_songnames_list)
 
     output_list = sorted(output_list, key=lambda b: b['id'])
     print pprint.PrettyPrinter(depth=6).pprint(output_list)
-    return render_template('discover.html', pageName='Discover',discoverList=output_list, blurb_list=blurb_list)
+    return render_template('discover.html', pageName='Discover',discoverList=output_list, blurb_dict=blurb_dict)
 
 
 @app.route('/discover')
@@ -314,14 +314,17 @@ def getBlurb(songname_list):
         #print wiki_api_url
         wiki_urls.append(wiki_api_url)
 
-    output_list = []
+    output_dict = {}
     h = html2text.HTML2Text()
+    song_index = 0
     for page in wiki_urls:
         r = requests.get(page)
         r1 = json.loads(r.text)
         for key_pagenum in r1['query']['pages'].keys():
             rawtext = r1['query']['pages'][key_pagenum]['extract']
         blurb = h.handle(rawtext)
-        output_list.append(blurb)
+        output_dict[input_list[song_index]] = (blurb)
+        song_index+=1
 
-    return output_list
+    print(output_dict)
+    return output_dict
