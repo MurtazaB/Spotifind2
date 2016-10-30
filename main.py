@@ -11,10 +11,6 @@ import base64
 app = Flask(__name__)
 app.secret_key = 'superSecret'
 
-
-
->>>>>>> 4f5bb289b9ef6d8ff4e07386b88efc183a78bfaa
-
 ## Needed for Bootstrap
 # Bootstrap(app)
 
@@ -60,33 +56,33 @@ def authenticate():
 	auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
 	return redirect(auth_url)
 
-@app.route("/getFavorites")
 def getFavorites():
-    fav_url = "https://api.spotify/v1/me/top/tracks?limit=10"
+    fav_url = "https://api.spotify.com/v1/me/top/tracks?limit=5"
     if "api_session_token" not in flask.session:
         return "Session not found"
     authorization_header = {"Authorization":"Bearer {}".format(session["api_session_token"])}
     fav_response = requests.get(fav_url, headers=authorization_header)
-    response_data = json.loads(fav_response.text);
+    response_data = json.loads(fav_response.text)['items'];
 
     result = []
 
     for i in response_data:
         result.append(i['id'])
 
-    return result;
+    return result
 
 @app.route('/discover')
 def discover():
     favorites = getFavorites()
     fav_str = ','.join(favorites)
-    disc_url = "https://api.spotify.com/v1/recommendations?seed_tracks={}".format(fav_str)
-    if "api_session_token" not in flask.session:
+    print fav_str
+
+    disc_url = "https://api.spotify.com/v1/recommendations?limit=10&seed_tracks={}".format(fav_str)
+    if "api_session_token" not in session:
         return "Session not found"
-    authorization_header = {"Authorization":"Bearer {}".format(access_token)}
+    authorization_header = {"Authorization":"Bearer {}".format(session['api_session_token'])}
     disc_response = requests.get(disc_url, headers=authorization_header)
     response_data = json.loads(disc_response.text);
-    print response_data
 
     return render_template('discover.html', pageName='Discover')
 
@@ -131,4 +127,4 @@ def callback():
 
     # Combine profile and playlist data to display
     display_arr = [profile_data] + playlist_data["items"];
-    return render_template("index.html",sorted_array=display_arr)
+    return redirect('http://127.0.0.1:8080/')
