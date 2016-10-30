@@ -182,10 +182,8 @@ def match():
             value['matched_item'] = key
             output_list.append(value)
 
-    #print pprint.PrettyPrinter(depth=6).pprint(mappedMatches)
     print pprint.PrettyPrinter(depth=6).pprint(output_list)
-
-    return "success"
+    return render_template('discover.html', pageName='Discover',discoverList=output_list)
 
 
 @app.route('/discover')

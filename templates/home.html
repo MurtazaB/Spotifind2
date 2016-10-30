@@ -33,7 +33,7 @@
   display: inline-block;
   vertical-align: middle;  /* vertical alignment of the inline element */
                            /* reset the font property */
-  font: 50px/1 "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font: 50px/1 proxima_nova, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 .jumbotron {
@@ -42,6 +42,7 @@
     font-size: 70px;
     color: white;
     background: rgba(0, 0, 0, 0); important!*/
+    font: proxima_nova, "Helvetica Neue", Helvetica, Arial, sans-serif;;
 }
 
 .authenticate-btn {
@@ -55,7 +56,13 @@
     border-color: #07BB4F;
     padding-left: 55px;
     padding-right: 55px;
-    font-size: .25em;
+    font-size: .23em;
+    font-weight: 500;
+    line-height: 1.5;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    min-width: 130px;
+    font: "Circular",Helvetica,Arial,sans-serif;;
 }
 
 </style>
@@ -63,7 +70,7 @@
 
 <div class="container">
     <div class="jumbotron">
-      <h1 align="center">Welcome </h1>
+      <h1 align="center">WELCOME </h1>
       <!-- Indicates a successful or positive action -->
      <div class="authenticate-btn"><a role="button" href="/authenticate" class="btn btn-success">Authenticate</a></div>
     </div>

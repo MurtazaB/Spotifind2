@@ -15,6 +15,11 @@
 		background-color: #282828;
 		color: white;
 	}
+	
+	.infoWell {
+		background-color: #3D3D3D;
+		border-color: #2E2E2E;
+	}
 
 	.listing-row {
 		width: 100%;
@@ -30,6 +35,12 @@
 		max-width: 150px;
 	}
 
+	.seeMore-btn {
+		border-radius: 24px;
+		background-color: #07BB4F;
+		margin-top: 5px;
+	}
+
 </style>
 
 <!-- Add carousel -->
@@ -37,6 +48,7 @@
 
 <!-- Add list of items -->
 <!-- <div class="container"> -->
+<div style="padding-top:70px; background-color:#181818"></div>
 	{% for song in discoverList %}
 	<div class="{{ 'gray' if (loop.index % 2) ==1 else 'black' }}-row listing-row">
 		<div class="container">
@@ -45,18 +57,27 @@
 				<div class="col-sm-2">
 					<img class="album-image" src="{{ song['picture'] }}">
 				</div>
-				<div class="col-sm-6">
+				<div class="col-sm-10">
 					<h3>{{loop.index}}. {{song['title']}} 
 						<span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span>
 					</h3>
 					<p>{{song['artist']}} | {{song['album']}}</p>
-					<!-- <p>Genre</p> -->
 					<audio controls>
 					  <source src="{{ song['preview_url'] }}">
 					Unable to generate a preview for this song.
 					</audio>
+					<br>
+					<button class="btn btn-success seeMore-btn" type="button" data-toggle="collapse" data-target="#collapse{{loop.index}}" aria-expanded="false" aria-controls="collapseExample">See More</button>
 				</div>
 			</div>
+				<div class="spacer"></div>
+				<div class="row">
+					<div class="collapse" id="collapse{{loop.index}}">
+					  <div class="well infoWell">
+					    How’s business? Boomin. The key to more success is to get a massage once a week, very important, major key, cloth talk. In life you have to take the trash out, if you have trash in your life, take it out, throw it away, get rid of it, major key. Cloth talk. To be successful you’ve got to work hard, to make history, simple, you’ve got to make it. Special cloth alert. The key to more success is to get a massage once a week, very important, major key, cloth talk.
+					  </div>
+					</div>
+				</div>
 			<div class="spacer"></div>
 		</div>
 	</div>
