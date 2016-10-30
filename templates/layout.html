@@ -11,6 +11,10 @@
   .navbar-fixed-top {
     border-width: 0 0 0px;
   }
+
+  .navbar-inverse .navbar-nav>.active>a {
+  background-color: transparent;
+  }
 </style>
 
 <div class="navbar transparent navbar-inverse navbar-fixed-top" >
@@ -25,7 +29,7 @@
         <span class="icon-bar"></span>
       </button>
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Home</a></li>
         <li><a href="#">Discover</a></li>
         <li><a href="#">About</a></li>
       </ul>
@@ -72,6 +76,20 @@
   </div><!-- /.container-fluid -->
 </nav>
 </div>
+
+
+<script>
+    $(document).ready(function(){
+      $(window).scroll(function() { // check if scroll event happened
+        if ($(document).scrollTop() > 50) { // check if user scrolled more than 50 from top of the browser window
+          $(".navbar-fixed-top").css("background-color", "#181818"); // if yes, then change the color of class "navbar-fixed-top" to white (#f8f8f8)
+        } else {
+          $(".navbar-fixed-top").css("background-color", "transparent"); // if not, change it back to transparent
+        }
+      });
+    });
+</script>
+
 {% endblock %}
 
 {% block content %}
