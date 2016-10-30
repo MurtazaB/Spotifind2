@@ -84,7 +84,19 @@ def discover():
     disc_response = requests.get(disc_url, headers=authorization_header)
     response_data = json.loads(disc_response.text);
 
-    return render_template('discover.html', pageName='Discover')
+    output_list = []
+    for track in response_data["tracks"]:
+        track_dict = {
+        "title":track["name"],
+        "artist":track["artists"]["name"],
+        "id":track["id"]
+        "picture":track["album"]["images"][1]["url"] #gives image URL
+        "album":track["album"]["name"]
+        "preview_url":track["preview_url"]
+        }
+        output_list.extend(track_dict)
+
+    return render_template('discover.html', pageName='Discover',discover_list=output_list)
 
 @app.route("/callback/q")
 def callback():
