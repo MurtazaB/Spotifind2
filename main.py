@@ -113,23 +113,40 @@ def match():
     libraryQualityUrl = query_url + "?ids=" + ",".join(listed_library_ids);
     library_response = requests.get(libraryQualityUrl, headers=authorization_header)
     library_quality_data = json.loads(library_response.text)['audio_features']
-    idBest = -1;
-    score = 1000000;
 
+    sortedList = [];
 
     for item in library_quality_data:
-        thisId = item['id']
         total = 0
         for key in averages:
             difference = abs(item[key] - averages[key])
             total += difference
-        if (total < score):
-            idBest = thisId
-            score = total
+        item['difference'] = total;
+        sortedList.append(item);
 
-    finalResponse = requests.get("https://api.spotify.com/v1/tracks/" + idBest, headers=authorization_header);
-    finalData = json.loads(finalResponse.text);
-    print finalData
+    sortedList = sorted(sortedList, key=lambda b: b['difference']);
+
+    bestIds = []
+
+    for i in range(0, 10):
+        bestIds.append(sortedList[i]['id']);
+
+    finalResponse = requests.get("https://api.spotify.com/v1/tracks?ids=" + ','.join(bestIds), headers=authorization_header);
+    finalData = json.loads(finalResponse.text)['tracks'];
+    output_list = []
+    for track in finalData:
+        track_dict = {
+        "title":track["name"],
+        "artist":track["artists"][0]["name"],
+        "id":track["id"],
+        "picture":track["album"]["images"][1]["url"], #gives image URL
+        "album":track["album"]["name"],
+        "preview_url":track["preview_url"],
+        "uri":track["uri"]
+        }
+        #print track_dict
+        output_list.append(track_dict)
+    print output_list
     return "success"
 
 
