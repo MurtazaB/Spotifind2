@@ -10,8 +10,20 @@ import pprint
 # from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
+<<<<<<< HEAD
+# <<<<<<< HEAD
+# app.run(host='0.0.0.0', port=5000)
+# =======
 app.secret_key = 'superSecret'
 
+
+
+# >>>>>>> 4f5bb289b9ef6d8ff4e07386b88efc183a78bfaa
+
+=======
+app.secret_key = 'superSecret'
+
+>>>>>>> 0a891ee063719134d78688bec63f2966c353fd56
 ## Needed for Bootstrap
 # Bootstrap(app)
 
@@ -89,11 +101,11 @@ def discover():
 
     disc_url = "https://api.spotify.com/v1/recommendations?limit=10&seed_tracks={}".format(fav_str)
     if "api_session_token" not in session:
-        return "Session not found"
+        return redirect("127.0.0.1:5000/")
     authorization_header = {"Authorization":"Bearer {}".format(session['api_session_token'])}
     disc_response = requests.get(disc_url, headers=authorization_header)
     response_data = json.loads(disc_response.text);
-
+ 
     output_list = []
     for track in response_data["tracks"]:
         track_dict = {
