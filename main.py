@@ -106,7 +106,6 @@ def createPlaylistIfNeeded():
         return
 
     if 'api_username' not in flask.session:
-        print 'playlist id ' + session['playlist_id']
         return
     payload = {'name' : 'Spotifind'}
     query_url = "https://api.spotify.com/v1/users/{}/playlists".format(session['api_username'])
