@@ -10,20 +10,9 @@ import pprint
 # from flask_bootstrap import Bootstrap
 
 app = Flask(__name__)
-<<<<<<< HEAD
-# <<<<<<< HEAD
-# app.run(host='0.0.0.0', port=5000)
-# =======
+
 app.secret_key = 'superSecret'
 
-
-
-# >>>>>>> 4f5bb289b9ef6d8ff4e07386b88efc183a78bfaa
-
-=======
-app.secret_key = 'superSecret'
-
->>>>>>> 0a891ee063719134d78688bec63f2966c353fd56
 ## Needed for Bootstrap
 # Bootstrap(app)
 
