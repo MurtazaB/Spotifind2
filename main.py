@@ -4,6 +4,7 @@ import requests
 import json
 import urllib
 import base64
+import pprint
 
 ## For Bootstrap templates
 # from flask_bootstrap import Bootstrap
@@ -11,7 +12,10 @@ import base64
 app = Flask(__name__)
 app.secret_key = 'superSecret'
 
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 ## Needed for Bootstrap
 # Bootstrap(app)
 
@@ -57,6 +61,7 @@ def authenticate():
 	auth_url = "{}/?{}".format(SPOTIFY_AUTH_URL, url_args)
 	return redirect(auth_url)
 
+<<<<<<< HEAD
 
 @app.route('/discover')
 def discover():
@@ -66,21 +71,24 @@ def discover():
 
 
 @app.route("/getFavorites")
+=======
+>>>>>>> origin/master
 def getFavorites():
-    fav_url = "https://api.spotify/v1/me/top/tracks?limit=10"
+    fav_url = "https://api.spotify.com/v1/me/top/tracks?limit=5"
     if "api_session_token" not in flask.session:
         return "Session not found"
     authorization_header = {"Authorization":"Bearer {}".format(session["api_session_token"])}
     fav_response = requests.get(fav_url, headers=authorization_header)
-    response_data = json.loads(fav_response.text);
+    response_data = json.loads(fav_response.text)['items'];
 
     result = []
 
     for i in response_data:
         result.append(i['id'])
 
-    return result;
+    return result
 
+<<<<<<< HEAD
 # @app.route('/discover')
 # def discover():
 #     favorites = getFavorites()
@@ -94,6 +102,36 @@ def getFavorites():
 #     print response_data
 
 #     return render_template('discover.html', pageName='Discover')
+=======
+@app.route('/discover')
+def discover():
+    favorites = getFavorites()
+    fav_str = ','.join(favorites)
+    print fav_str
+
+    disc_url = "https://api.spotify.com/v1/recommendations?limit=10&seed_tracks={}".format(fav_str)
+    if "api_session_token" not in session:
+        return "Session not found"
+    authorization_header = {"Authorization":"Bearer {}".format(session['api_session_token'])}
+    disc_response = requests.get(disc_url, headers=authorization_header)
+    response_data = json.loads(disc_response.text);
+
+    output_list = []
+    for track in response_data["tracks"]:
+        track_dict = {
+        "title":track["name"],
+        "artist":track["artists"][0]["name"],
+        "id":track["id"],
+        "picture":track["album"]["images"][1]["url"], #gives image URL
+        "album":track["album"]["name"],
+        "preview_url":track["preview_url"],
+        "uri":track["uri"]
+        }
+        #print track_dict
+        output_list.append(track_dict)
+    print pprint.PrettyPrinter(depth=6).pprint(output_list)
+    return render_template('discover.html', pageName='Discover',discover_list=output_list)
+>>>>>>> origin/master
 
 @app.route("/callback/q")
 def callback():
@@ -134,6 +172,6 @@ def callback():
     playlists_response = requests.get(playlist_api_endpoint, headers=authorization_header)
     playlist_data = json.loads(playlists_response.text)
 
-    # Combine profile and playlist data to display
+    # Combine profile and playlist data to display=
     display_arr = [profile_data] + playlist_data["items"];
-    return render_template("index.html",sorted_array=display_arr)
+    return redirect('http://127.0.0.1:5000/')
